@@ -1,0 +1,66 @@
+### @name GetFactManyByTagID
+POST {{host}}/api/v1/operation
+
+{
+	"accountAmount": "500.01",
+	"accountCurrencyDigitalCode": "643",
+	"accountNumber": "40702810810000038747",
+	"acquirerId": "17495726",
+	"authorizationDate": "2023-04-05T00:00:00Z",
+	"bic": "044525974",
+	"cardNumber": "5534",
+	"category": "fee",
+	"chargeDate": "2023-04-05T00:00:00Z",
+	"counterParty": {
+		"account": "4070281051000071041",
+		"bankBic": "04452597",
+		"bankName": "АО \"ТИНЬКОФФ БАНК\"",
+		"bankSwiftCode": "CHASUS3",
+		"corrAccount": "3000234050000123405",
+		"inn": "36610955450",
+		"kpp": "0",
+		"name": "Межрайонная ИФНС России № 17 по Воронежской област"
+	},
+	"description": "Перевод собственных средств на счет. НДС не облагается",
+	"documentNumber": "175926",
+	"drawDate": "2023-04-05T00:00:00Z",
+	"mcc": "0010",
+	"merch": {
+		"address": "13 VOLODARSKOGO STR",
+		"city": "MOSCOW",
+		"country": "RUS",
+		"index": "183038",
+		"name": "Tinkoff.cc_trans"
+	},
+	"operationAmount": "500.01",
+	"operationCurrencyDigitalCode": "643",
+	"operationId": "64be58f9-c7fc-0027-96ba-763ec56a2317",
+	"operationStatus": "transaction",
+	"payPurpose": "Оплата услуг по договору 17369058. НДС не облагается",
+	"payVo": "payment-order",
+	"payer": {
+		"account": "40702810810000038747",
+		"bankName": "АО \"ТИНЬКОФФ БАНК\"",
+		"bic": "0044525974",
+		"corrAccount": "30102810945250000974",
+		"inn": "17499237465",
+		"kpp": "0",
+		"name": "ИП Коркунов Александр Михайлович"
+	},
+	"priority": "5",
+	"receiver": {
+		"account": "40702810810000038747",
+		"bankName": "АО \"ТИНЬКОФФ БАНК\"",
+		"bic": "044525974",
+		"corrAccount": "30102810945250000974",
+		"inn": "17499237465",
+		"kpp": "0",
+		"name": "ИП Коркунов Александр Михайлович"
+	},
+	"rrn": "8408475",
+	"rubleAmount": "500.01",
+	"status": "Active",
+	"trxnPostDate": "2023-04-06T00:00:00Z",
+	"typeOfOperation": "credit",
+	"ucid": "1053539419"
+}

@@ -1,0 +1,288 @@
+definitions:
+  CounterParty:
+    properties:
+      account:
+        description: Номер счета контрагента
+        example: "4070281051000071041"
+        type: string
+      bankBic:
+        description: БИК банка контрагента
+        example: "04452597"
+        type: string
+      bankName:
+        description: Название банка контрагента
+        example: АО "ТИНЬКОФФ БАНК"
+        type: string
+      bankSwiftCode:
+        description: SWIFT-код банка контрагента
+        example: CHASUS3
+        type: string
+      corrAccount:
+        description: Корр. счет контрагента
+        example: "3000234050000123405"
+        type: string
+      inn:
+        description: ИНН контрагента
+        example: "36610955450"
+        type: string
+      kpp:
+        description: КПП контрагента
+        example: "0"
+        type: string
+      name:
+        description: Наименование контрагента
+        example: Межрайонная ИФНС России № 17 по Воронежской област
+        type: string
+    type: object
+  ErrorMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  ErrorReply:
+    properties:
+      error:
+        $ref: '#/definitions/ErrorMessage'
+    type: object
+  Merch:
+    properties:
+      address:
+        description: Адрес мерчанта
+        example: 13 VOLODARSKOGO STR
+        type: string
+      city:
+        description: Город мерчанта
+        example: MOSCOW
+        type: string
+      country:
+        description: Страна мерчанта
+        example: RUS
+        type: string
+      index:
+        description: Почтовый индекс мерчанта
+        example: "183038"
+        type: string
+      name:
+        description: Название мерчанта
+        example: Tinkoff.cc_trans
+        type: string
+    type: object
+  Operation:
+    description: Операция по счёту.
+    properties:
+      accountAmount:
+        description: Сумма в валюте счёта
+        example: "500.01"
+        type: string
+      accountCurrencyDigitalCode:
+        description: Код валюты счёта
+        example: "643"
+        type: string
+      accountNumber:
+        description: Номер счёта
+        example: "40702810510000710417"
+        type: string
+      acquirerId:
+        description: ID эквайера
+        example: "17495726"
+        type: string
+      authorizationDate:
+        description: Дата авторизации
+        example: "2022-07-06T00:00:00Z"
+        type: string
+      bic:
+        description: БИК
+        example: "044525974"
+        type: string
+      cardNumber:
+        description: Маскированный номер карты
+        example: "5534"
+        type: string
+      category:
+        description: Категория операции
+        example: fee
+        type: string
+      chargeDate:
+        description: Дата поступления
+        example: "2022-07-06T00:00:00Z"
+        type: string
+      counterParty:
+        $ref: '#/definitions/CounterParty'
+      description:
+        description: Описание операции
+        example: Перевод собственных средств на счет. НДС не облагается
+        type: string
+      documentNumber:
+        description: Номер документа
+        example: "175926"
+        type: string
+      drawDate:
+        description: Дата списания
+        example: "2022-07-06T00:00:00Z"
+        type: string
+      mcc:
+        description: MCC
+        example: "0010"
+        type: string
+      merch:
+        $ref: '#/definitions/Merch'
+      operationAmount:
+        description: Сумма в валюте операции
+        example: "500.01"
+        type: string
+      operationCurrencyDigitalCode:
+        description: Код валюты операции
+        example: "643"
+        type: string
+      operationId:
+        description: Уникальный ID операции
+        example: 64be58f9-c7fc-0027-96ba-763ec56a2317
+        type: string
+      operationStatus:
+        description: Технический статус операции
+        example: transaction
+        type: string
+      payPurpose:
+        description: Назначение платежа
+        example: Оплата услуг по договору 17369058. НДС не облагается
+        type: string
+      payVo:
+        description: Тип платежа (буквенное значение)
+        example: payment-order
+        type: string
+      payer:
+        $ref: '#/definitions/Payer'
+      priority:
+        description: Очередность
+        example: "5"
+        type: string
+      receiver:
+        $ref: '#/definitions/Receiver'
+      rrn:
+        description: RRN
+        example: "8408475"
+        type: string
+      rubleAmount:
+        description: Сумма операции в рублях по курсу ЦБ на дату проведения операции
+        example: "500.01"
+        type: string
+      status:
+        description: Статус операции
+        example: Active
+        type: string
+      trxnPostDate:
+        description: Дата транзакции
+        example: "2022-07-06T00:00:00Z"
+        type: string
+      typeOfOperation:
+        description: Тип операции
+        example: credit
+        type: string
+      ucid:
+        description: UCID карты
+        example: "1053539419"
+        type: string
+    required:
+    - accountAmount
+    - accountCurrencyDigitalCode
+    - accountNumber
+    - bic
+    - category
+    - operationId
+    - operationStatus
+    - status
+    - typeOfOperation
+    type: object
+  Payer:
+    properties:
+      account:
+        description: Номер счета плательщика
+        example: "40702810510000710417"
+        type: string
+      bankName:
+        description: Название банка контрагента
+        example: АО "ТИНЬКОФФ БАНК"
+        type: string
+      bic:
+        description: БИК банка плательщика
+        example: "0044525974"
+        type: string
+      corrAccount:
+        description: Корр. счет плательщика
+        example: "30102810945250000974"
+        type: string
+      inn:
+        description: ИНН плательщика
+        example: "17499237465"
+        type: string
+      kpp:
+        description: КПП плательщика
+        example: "0"
+        type: string
+      name:
+        description: Наименование плательщика
+        example: ИП Коркунов Александр Михайлович
+        type: string
+    type: object
+  Receiver:
+    properties:
+      account:
+        description: Номер счета получателя
+        example: "40702810510000710417"
+        type: string
+      bankName:
+        description: Название банка контрагента
+        example: АО "ТИНЬКОФФ БАНК"
+        type: string
+      bic:
+        description: БИК получателя
+        example: "044525974"
+        type: string
+      corrAccount:
+        description: Корр. счет получателя
+        example: "30102810945250000974"
+        type: string
+      inn:
+        description: ИНН получателя
+        example: "17499237465"
+        type: string
+      kpp:
+        description: КПП получателя
+        example: "0"
+        type: string
+      name:
+        description: Наименование получателя
+        example: ИП Коркунов Александр Михайлович
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/operation:
+    post:
+      consumes:
+      - application/json
+      description: Создание операции
+      operationId: create-operation
+      parameters:
+      - description: operation info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/Operation'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorReply'
+        "500":
+          description: Unknown error
+          schema:
+            $ref: '#/definitions/ErrorReply'
+      summary: Создание операции
+swagger: "2.0"
