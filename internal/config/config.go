@@ -34,15 +34,8 @@ type Config struct {
 		Trace  trace.Config
 		Metric metric.Config
 	}
-	Datastore Datastore
-	Labels    struct {
-		Default map[string]string
-		Custom  []struct {
-			ID   int64
-			Name string
-			Vars map[string]string
-		}
-	}
+	DB       DB
+	RabbitMQ RabbitMQ
 }
 
 func (d Config) String() string {

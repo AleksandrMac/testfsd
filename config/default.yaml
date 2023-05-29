@@ -13,36 +13,7 @@ otel:
   # metric:
   #   proto: grpc
   #   endpoint: localhost:30800
-datastore:
-#   url: https://development.kpi-drive.ru
-#   token: 48ab34464a5573519725deb5865cc74c
-  url: https://cu.kpi-drive.ru
-  token: 5c3964b8e3ee4755f2cc0febb851e2f8
-  indicatorToMoId: 22451
-  authUserId: 40
-
-labels:
-  default:
-    4: ПО
-    1003: Тинькофф
-  custom:
-  - id: 2003
-    name: operationId
-  - id: 5
-    name: typeOfOperation
-    vars:
-      credit: Расход
-      debet: Приход
-  - id: 1
-    name: accountNumber
-    vars:
-      '40702810810000038747': ЦУ
-      '12334': ИП
-      '345': ЦУ
-  - id: 2
-    name: payer.name
-  - id: 3
-    name: accountCurrencyDigitalCode
-    vars:
-      '643': руб
-
+db:
+  dsn: "postgres://postgres:my-secret-pw@localhost:5432/testfsd"
+rabbitmq:
+  dsn: "amqp://guest:guest@localhost:5672/"

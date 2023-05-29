@@ -10,6 +10,7 @@
 					"env": {
 						"LOG_LEVEL": "debug",
 						"LOG_DEVELOPMENT": "true",
+						"SERVER_PORT": "5001"
 					},
 					"request": "launch",
 					"mode": "auto",

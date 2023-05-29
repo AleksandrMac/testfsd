@@ -11,9 +11,12 @@ import (
 	"github.com/AleksandrMac/testfsd/docs"
 	"github.com/AleksandrMac/testfsd/internal/config"
 	"github.com/AleksandrMac/testfsd/internal/connect"
+	"github.com/AleksandrMac/testfsd/internal/datastores"
 	"github.com/AleksandrMac/testfsd/internal/log"
 	internalMetric "github.com/AleksandrMac/testfsd/internal/metric"
+	"github.com/AleksandrMac/testfsd/internal/queue"
 	internalTrace "github.com/AleksandrMac/testfsd/internal/trace"
+	"github.com/jackc/pgx/v4/pgxpool"
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
@@ -71,6 +74,15 @@ func startServer(cmd *cobra.Command, agrs []string) {
 	observabilityCloser := initObservability(ctx)
 	defer observabilityCloser(ctx)
 
+	// queuer, queuerCloser := initQueuerStub(ctx)
+	// defer queuerCloser(ctx)
+
+	queuer, queuerCloser := initQueuerRabbitMQ(ctx)
+	defer queuerCloser(ctx)
+
+	pgpool, pgCloser := initPGPool(ctx)
+	defer pgCloser(ctx)
+
 	log.Info(fmt.Sprintf("Start http-server on %s:%d", config.Default.Server.Host, config.Default.Server.Port))
 	setupDoc()
 	r := chi.NewRouter()
@@ -87,7 +99,7 @@ func startServer(cmd *cobra.Command, agrs []string) {
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {})
 	r.Get("/doc/*", httpSwagger.WrapHandler)
 
-	connect.RegisterRouterConnect(r)
+	connect.RegisterRouterConnect(r, queuer, datastores.NewCommonDatastorePGSql(pgpool))
 
 	http.ListenAndServe(fmt.Sprintf("%s:%d", config.Default.Server.Host, config.Default.Server.Port), r)
 }
@@ -142,6 +154,67 @@ func initObservability(ctx context.Context) (close func(context.Context)) {
 	}
 
 	return func(ctx context.Context) {
+		for i := len(closedFns) - 1; i > 0; i-- {
+			closedFns[i](ctx)
+		}
+	}
+}
+
+func initQueuerStub(ctx context.Context) (q queue.Queuer, close func(context.Context)) {
+	closedFns := []func(context.Context){}
+	ctx, cancel := context.WithCancel(ctx)
+
+	q, err := queue.NewQueueStub(ctx)
+	if err != nil {
+		log.Info(err.Error())
+	}
+
+	closedFns = append(closedFns, func(ctx context.Context) {
+		cancel()
+		q.Close()
+	})
+
+	return q, func(ctx context.Context) {
+		for i := len(closedFns) - 1; i > 0; i-- {
+			closedFns[i](ctx)
+		}
+	}
+}
+
+func initQueuerRabbitMQ(ctx context.Context) (q queue.Queuer, close func(context.Context)) {
+	closedFns := []func(context.Context){}
+	ctx, cancel := context.WithCancel(ctx)
+
+	q, err := queue.NewQueueRabbitMQ(ctx, config.Default.RabbitMQ)
+	if err != nil {
+		log.Info(err.Error())
+	}
+
+	closedFns = append(closedFns, func(ctx context.Context) {
+		cancel()
+		q.Close()
+	})
+
+	return q, func(ctx context.Context) {
+		for i := len(closedFns) - 1; i > 0; i-- {
+			closedFns[i](ctx)
+		}
+	}
+}
+
+func initPGPool(ctx context.Context) (db *pgxpool.Pool, close func(context.Context)) {
+	closedFns := []func(context.Context){}
+
+	db, err := pgxpool.Connect(ctx, config.Default.DB.Dsn)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	closedFns = append(closedFns, func(ctx context.Context) {
+		db.Close()
+	})
+
+	return db, func(ctx context.Context) {
 		for i := len(closedFns) - 1; i > 0; i-- {
 			closedFns[i](ctx)
 		}
